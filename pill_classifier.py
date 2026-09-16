@@ -46,7 +46,7 @@ class ColorClassificationResult:
 	debug_mask: np.ndarray
 
 
-# ── White pill segmentor (merged from white_pill_segmentor.py) ───────────────
+# ── White pill segmentor ───────────────
 
 @dataclass
 class WhitePillResult:
@@ -902,7 +902,7 @@ def _segment_pills(
 	l_channel = lab[:, :, 0]
 	clahe = cv2.createCLAHE(clipLimit=clahe_clip, tileGridSize=(clahe_tile, clahe_tile))
 	l_eq = clahe.apply(l_channel)
-	blur = cv2.GaussianBlur(l_eq, (5, 5), 0)
+	blur = cv2.GaussianBlur(l_eq, (5, 5), 0) #smooth remaining noise
 	block = max(3, adaptive_block | 1)
 	adaptive = cv2.adaptiveThreshold(
 		blur, 255,
@@ -913,7 +913,7 @@ def _segment_pills(
 	hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
 	s_channel = hsv[:, :, 1]
 	v_channel = hsv[:, :, 2]
-	s_mask = (s_channel >= sat_thresh).astype(np.uint8) * 255
+	s_mask = (s_channel >= sat_thresh).astype(np.uint8) * 255  # saturation mask
 	dark_mask = (v_channel <= val_dark_thresh).astype(np.uint8) * 255
 	thresh = cv2.bitwise_or(adaptive, s_mask)
 	thresh = cv2.bitwise_or(thresh, dark_mask)
@@ -926,7 +926,7 @@ def _segment_pills(
 	border[-margin_h:, :] = 1
 	border[:, :margin_w] = 1
 	border[:, -margin_w:] = 1
-	border_white_ratio = float(np.mean(thresh[border == 1] == 255))
+	border_white_ratio = float(np.mean(thresh[border == 1] == 255))  #if more than 50% of the 5% closest to the image edge are active as pills then its background and not pills  so we flip the entire mask
 	pill_mask = cv2.bitwise_not(thresh) if border_white_ratio > 0.5 else thresh.copy()
 
 	kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
