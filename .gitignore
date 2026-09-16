@@ -1,5 +1,14 @@
 backup/
 venv/
+.venv/
 .claude/
 __pycache__/
+
+# Original demo notes, published as docs/raspberry-pi-setup.md
 DEMO_GUIDE.md
+
+# Editors / OS
+.vscode/
+.idea/
+desktop.ini
+Thumbs.db
