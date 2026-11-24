@@ -8,7 +8,7 @@ A computer vision system that inspects photos of pill blister packs with **class
 
 It runs two ways: a **desktop app** that shows every processing step, and a **Raspberry Pi 5** version that signals the inspection result with LEDs and a servo motor.
 
-![Detection results: white pills, empty cells and a color anomaly](docs/results.png)
+![Detection results on six packs: white and colored pills, empty cells and color anomalies](docs/results.jpg)
 
 ## Two versions
 
@@ -75,7 +75,7 @@ The full setup (flashing the SD card, SSH, wiring diagram, hardware tests and tr
 ├── docs/
 │   ├── how-it-works.md       # Step-by-step pipeline explanation
 │   ├── raspberry-pi-setup.md # Pi setup, wiring and demo guide
-│   └── results.png
+│   └── results.jpg
 ├── requirements.txt
 └── requirements-rpi.txt
 ```
